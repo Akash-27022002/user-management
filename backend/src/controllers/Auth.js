@@ -34,11 +34,11 @@ const login = async (req, res) => {
  */
 const createAccount = async (req, res) => {
     try {
-        const { name, email, password, company, age, dob } = req.body;
+        const { name, email, password, company, dob } = req.body;
         const file = req.file;
         const user = await isEmailExists(email);
         if (user) throw new Error("User Already Exits");
-        const newUser = await createUsers({ name, email, password, company, age, dob: new Date(dob), image: file.buffer });
+        const newUser = await createUsers({ name, email, password, company, dob: new Date(dob), image: file.buffer });
         if (!newUser) throw new Error("UnExpected Error While Creating the User");
         console.log("sending OTP");
         await sendOtp(email, newUser._id)
@@ -88,7 +88,7 @@ const validateOtp = async (req, res) => {
         const { email, otp } = req.body;
         const user = await fetchUserByEmail(email);
         if (!user) return res.status(400).json({ error: "Invalid Uer" });
-        const result = await verifyOtp(otp, id);
+        const result = await verifyOtp(otp, user._id);
         if (!result) return res.status(400).json({ error: "Invalid OTP" });
         console.log("result", result);
         const { accessToken, refreshToken } = user.generateJWT();
