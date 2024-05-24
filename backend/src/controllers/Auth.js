@@ -17,6 +17,7 @@ const login = async (req, res) => {
         if (!user) throw new Error("Invalid Email and Password");
         const matchPassword = await user.matchPassword(password);
         if (!matchPassword) throw new Error("Invalid Email and Password");
+        await sendOtp(email, user._id);
         return res.status(201).json({ id: user._id, email });
     } catch (error) {
         if (error.message == "Invalid Email and Password") {
