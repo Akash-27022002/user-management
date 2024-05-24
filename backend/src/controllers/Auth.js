@@ -95,7 +95,7 @@ const validateOtp = async (req, res) => {
         const { accessToken, refreshToken } = user.generateJWT();
         setCookies(res, TOKEN_CONSTANTS.ACCESS_TOKEN, accessToken, process.env.JWT_TOKEN_EXPIRY_TIME, false, true);
         setCookies(res, TOKEN_CONSTANTS.REFRESH_TOKEN, refreshToken, process.env.JWT_REFRESH_TOKEN_EXPIRY_TIME, false, true);
-        return res.status(200).json({ message: "Success" })
+        return res.status(200).json({ message: "Success", id: user._id })
     } catch (error) {
         return res.status(500).json({ error: error.message })
     }
