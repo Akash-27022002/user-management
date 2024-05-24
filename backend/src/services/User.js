@@ -64,14 +64,14 @@ const createUsers = async (userData) => {
  * @param {String} id 
  * @param {Object} userData 
  * @param {String} userData.name
- * @param {Number} userData.age
+ * @param {Number} userData.dob
  * @param {String} userData.company
  * @returns 
  */
 const updateUserById = async (id, userData) => {
     try {
-        const { name, company } = userData;
-        if (!name || !company) return null;
+        const { name, company, dob } = userData;
+        if (!name || !company || !dob) return null;
         const user = await User.findByIdAndUpdate(id, userData);
         return new Users(user).data;
     } catch (error) {

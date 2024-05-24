@@ -24,7 +24,7 @@ class Users {
         this.isVerified = params.isVerified;
         this.company = params.company;
         this.dob = params.dob;
-        this.image = Buffer.from(params.image.data).toString('base64');
+        this.image = Buffer.from(params.image).toString('base64');
         this.createdAt = params.createdAt;
         this.updatedAt = params.updatedAt;
     }

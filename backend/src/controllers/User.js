@@ -29,8 +29,8 @@ const updateUserProfile = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { company, dob } = req.body;
-        const result = await updateUserById(id, { company, dob: new Date(dob) });
+        const { company, dob, name } = req.body;
+        const result = await updateUserById(id, { company, dob: new Date(dob), name });
         if (!result) return res.status(400).json({ error: "company,dob is required" })
         return res.status(200).json({ message: "User updated Successfully" });
     } catch (error) {
