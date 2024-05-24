@@ -73,11 +73,12 @@ const forgotPassword = async (req, res) => {
  */
 const logout = async (req, res) => {
     try {
-        res.clearCookie(TOKEN_CONSTANTS.ACCESS_TOKEN);
-        res.clearCookie(TOKEN_CONSTANTS.REFRESH_TOKEN);
-        res.status(200).json({});
-        // setCookies(res, TOKEN_CONSTANTS.ACCESS_TOKEN, "", 100 , false, true);
-        // setCookies(res, TOKEN_CONSTANTS.REFRESH_TOKEN, "", 100, false, true);
+        // res.clearCookie(TOKEN_CONSTANTS.ACCESS_TOKEN);
+        // res.clearCookie(TOKEN_CONSTANTS.REFRESH_TOKEN);
+
+        setCookies(res, TOKEN_CONSTANTS.ACCESS_TOKEN, "", 100, false, true);
+        setCookies(res, TOKEN_CONSTANTS.REFRESH_TOKEN, "", 100, false, true);
+        return res.status(200).json({});
     } catch (error) {
         return res.status(500).json({ error: error.message })
     }
