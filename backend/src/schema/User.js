@@ -29,14 +29,29 @@ const userSchema = new mongoose.Schema({
         required: [true, 'company is Required'],
         trim: true
     },
-    age: {
-        type: Number,
-        min: [18, 'Age must be at least 18'],
-        required: [true, 'Age is Required'],
-    },
+    // age: {
+    //     type: Number,
+    //     min: [18, 'Age must be at least 18'],
+    //     required: [true, 'Age is Required'],
+    // },
     dob: {
         type: Date,
-        required: [true, 'Date of birth is required']
+        required: [true, 'Date of birth is required'],
+        validate: {
+            validator: function (value) {
+                const today = new Date();
+                const birthDate = new Date(value);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDifference = today.getMonth() - birthDate.getMonth();
+
+                if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                return age >= 18;
+            },
+            message: 'User must be at least 18 years old'
+        }
     },
     isVerified: {
         type: Boolean,

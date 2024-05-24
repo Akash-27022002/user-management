@@ -49,6 +49,7 @@ const isUserVerified = async (email) => {
 const createUsers = async (userData) => {
     try {
         const newUser = await Users.NewUser(userData);
+        console.log(newUser);
         if (!newUser) null;
         const user = new User(newUser);
         await user.save();
@@ -69,8 +70,8 @@ const createUsers = async (userData) => {
  */
 const updateUserById = async (id, userData) => {
     try {
-        const { name, age, company } = userData;
-        if (!name || !age || !company) return null;
+        const { name, company } = userData;
+        if (!name || !company) return null;
         const user = await User.findByIdAndUpdate(id, userData);
         return new Users(user).data;
     } catch (error) {

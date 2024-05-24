@@ -17,7 +17,7 @@ const login = async (req, res) => {
         if (!user) throw new Error("Invalid Email and Password");
         const matchPassword = await user.matchPassword(password);
         if (!matchPassword) throw new Error("Invalid Email and Password");
-        return res.status(201).json({ _id, email });
+        return res.status(201).json({ id: user._id, email });
     } catch (error) {
         if (error.message == "Invalid Email and Password") {
             return res.status(400).json({ error: error.message })
@@ -38,11 +38,11 @@ const createAccount = async (req, res) => {
         const file = req.file;
         const user = await isEmailExists(email);
         if (user) throw new Error("User Already Exits");
-        const newUser = await createUsers({ name, email, password, company, age, dob: new Date(), image: file.buffer });
+        const newUser = await createUsers({ name, email, password, company, age, dob: new Date(dob), image: file.buffer });
         if (!newUser) throw new Error("UnExpected Error While Creating the User");
         console.log("sending OTP");
         await sendOtp(email, newUser._id)
-        return res.status(201).json({ _id, email });
+        return res.status(201).json({ id: newUser._id, email });
     } catch (error) {
         console.log(error);
         return res.status(400).json({ message: error.message });

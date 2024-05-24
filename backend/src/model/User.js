@@ -11,7 +11,6 @@ class Users {
     #password;
     company;
     dob;
-    age;
     image;
     createdAt;
     updatedAt;
@@ -25,7 +24,6 @@ class Users {
         this.isVerified = params.isVerified;
         this.company = params.company;
         this.dob = params.dob;
-        this.age = params.age;
         this.image = params.image;
         this.createdAt = params.createdAt;
         this.updatedAt = params.updatedAt;
@@ -38,7 +36,6 @@ class Users {
             _id: this._id,
             isVerified: this.isVerified,
             dob: this.dob,
-            age: this.age,
             image: this.image,
             company: this.company
 
@@ -54,15 +51,14 @@ class Users {
      * @param {string} userData.name
      * @param {string} userData.password
      * @param {string} userData.dob
-     * @param {String} userData.age
      * @param {String} userData.image
      **/
 
     static async NewUser(userData) {
         try {
-            const { email, name, company, dob, age, image, password } = userData;
+            const { email, name, company, dob, image, password } = userData;
             console.log({ userData });
-            if (!name || !password || !company || !dob || !age || !image || !email) {
+            if (!name || !password || !company || !dob || !image || !email) {
                 return null;
             }
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -73,7 +69,6 @@ class Users {
                 isVerified: false,
                 company,
                 dob,
-                age,
                 image,
             };
         } catch (err) {
