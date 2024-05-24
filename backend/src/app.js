@@ -4,6 +4,12 @@ const cors = require("cors")
 const router = require("./routes");
 
 const app = express();
+
+
+app.use(cookieParser());
+app.use(express.json());
+
+app.set("trust proxy", 1);
 app.use(cors({
     origin: [
         "http://localhost:5175",
@@ -13,9 +19,6 @@ app.use(cors({
     credentials: true,
     withCredentials: true,
 }));
-
-app.use(cookieParser());
-app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("<h1>HAa </h1>")

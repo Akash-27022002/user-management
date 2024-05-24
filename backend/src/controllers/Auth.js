@@ -73,9 +73,8 @@ const forgotPassword = async (req, res) => {
  */
 const logout = async (req, res) => {
     try {
-        // res.clearCookie(TOKEN_CONSTANTS.ACCESS_TOKEN);
-        // res.clearCookie(TOKEN_CONSTANTS.REFRESH_TOKEN);
-
+        res.clearCookie(TOKEN_CONSTANTS.ACCESS_TOKEN);
+        res.clearCookie(TOKEN_CONSTANTS.REFRESH_TOKEN);
         setCookies(res, TOKEN_CONSTANTS.ACCESS_TOKEN, "", 100, false, true);
         setCookies(res, TOKEN_CONSTANTS.REFRESH_TOKEN, "", 100, false, true);
         return res.status(200).json({});
@@ -94,6 +93,7 @@ const validateOtp = async (req, res) => {
         if (!result) return res.status(400).json({ error: "Invalid OTP" });
         console.log("result", result);
         const { accessToken, refreshToken } = user.generateJWT();
+        console.log(accessToken, refreshToken);
         setCookies(res, TOKEN_CONSTANTS.ACCESS_TOKEN, accessToken, process.env.JWT_TOKEN_EXPIRY_TIME, false, true);
         setCookies(res, TOKEN_CONSTANTS.REFRESH_TOKEN, refreshToken, process.env.JWT_REFRESH_TOKEN_EXPIRY_TIME, false, true);
         return res.status(200).json({ message: "Success", id: user._id })
