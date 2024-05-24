@@ -17,7 +17,7 @@ const login = async (req, res) => {
         if (!user) throw new Error("Invalid Email and Password");
         const matchPassword = await user.matchPassword(password);
         if (!matchPassword) throw new Error("Invalid Email and Password");
-        return res.redirect(`/verification/${user._id}/?email=${email}`);
+        return res.status(201).json({ _id, email });
     } catch (error) {
         if (error.message == "Invalid Email and Password") {
             return res.status(400).json({ error: error.message })
