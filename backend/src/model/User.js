@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
+const { Buffer } = require("buffer")
 
 
 class Users {
@@ -24,7 +24,7 @@ class Users {
         this.isVerified = params.isVerified;
         this.company = params.company;
         this.dob = params.dob;
-        this.image = params.image;
+        this.image = Buffer(params.image);
         this.createdAt = params.createdAt;
         this.updatedAt = params.updatedAt;
     }
