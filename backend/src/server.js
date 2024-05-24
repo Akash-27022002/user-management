@@ -3,9 +3,8 @@ dotenv.config({});
 const mongoose = require('mongoose');
 const app = require("./app");
 const PORT = process.env.PORT || 8081;
-
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://adsrivastav179:Adarsh1234@cluster0.sdqffov.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
