@@ -37,7 +37,7 @@ const NewPassword = ({ open, close, email, otp }) => {
     onSuccess: async (data) => {
       console.log(data);
       close();
-      navigate("/login/");
+      navigate("/");
     },
     onError: async (data) => {
       const x = await data;

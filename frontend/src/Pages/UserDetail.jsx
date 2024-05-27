@@ -58,7 +58,7 @@ const UserDetail = () => {
     mutationFn: logout,
     onSuccess: async ({ data }) => {
       console.log(data);
-      navigate("/login");
+      navigate("/");
     },
     onError: async (data) => {
       const x = await data;
@@ -105,9 +105,9 @@ const UserDetail = () => {
     }
   };
   useEffect(() => {
-    console.log("first", values);
     const fd = new FormData();
     fd.append("image", values.file);
+    console.log("fd===>",fd);
     mutationEditDp.mutate({ id: params.userId, data: fd });
   }, [values.file]);
 
@@ -116,7 +116,6 @@ const UserDetail = () => {
       <div className="w-[10%] top-10 right-10 mr-10 absolute">
         <Button
           onClick={() => {
-            console.log("asd");
             mutationLogout.mutate({});
           }}
         >

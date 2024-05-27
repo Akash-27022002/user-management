@@ -27,6 +27,7 @@ export const logout = (data) => {
     url: "/auth/logout",
     method: "post",
   });
+  localStorage.clear();
   console.log(result);
   return result;
 };
