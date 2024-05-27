@@ -4,6 +4,8 @@ along with the user profile and here we showing the user account details
 user will able to update the password , forgot password and update his 
 account details such as DOB , name and company also able to delete the account
 
+You can view the deployed project [here](https://user-management-frontend.onrender.com).
+
 ## Made with
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -18,6 +20,7 @@ account details such as DOB , name and company also able to delete the account
 ```sh
 git clone https://github.com/Akash-27022002/user-management.git
 cd user-management
+git checkout master
 ```
 ## How to run Backend
 ```sh
