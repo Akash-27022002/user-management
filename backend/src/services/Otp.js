@@ -12,7 +12,7 @@ const sendOtp = async (email, userId) => {
         } else {
             await OTP.create(newOtp);
         }
-        // await sendEmail(email, "OTP Verification", `OTP : ${newOtp.otp}`);
+        await sendEmail(email, "OTP Verification", `OTP : ${newOtp.otp}`);
         return "Success"
     } catch (error) {
         throw error;
