@@ -49,7 +49,6 @@ const isUserVerified = async (email) => {
 const createUsers = async (userData) => {
     try {
         const newUser = await Users.NewUser(userData);
-        console.log(newUser);
         if (!newUser) null;
         const user = new User(newUser);
         await user.save();
@@ -102,7 +101,7 @@ const updatePassword = async (user, password) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const result = await user.updateOne({ password: hashedPassword });
         if (!result) return null;
-        return new Users(result);
+        return true;
     } catch (error) {
         throw error;
     }
@@ -116,7 +115,7 @@ const updatePasswordById = async (id, newpassword, oldPassword) => {
         if (!isValid) return null;
         const result = await updatePassword(user, newpassword);
         if (!result) return null;
-        return new Users(result);
+        return true;
     } catch (error) {
         throw error;
     }
@@ -129,7 +128,7 @@ const forgotPasswordByUser = async (id, password) => {
         if (!user) return null;
         const result = await updatePassword(user, password);
         if (!result) return null;
-        return new Users(result);
+        return true;
     } catch (error) {
 
     }

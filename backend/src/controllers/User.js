@@ -17,6 +17,7 @@ const updateUserProfile = async (req, res) => {
     try {
         const { id } = req.params;
         const file = req.file;
+        console.log(file);
         const result = await updateUserProfileById(id, file.buffer);
         if (!result) return res.status(400).json({ error: "UnExpected Error While Updating the User" });
         return res.status(200).json({ message: "Profile updated Successfully!!" })

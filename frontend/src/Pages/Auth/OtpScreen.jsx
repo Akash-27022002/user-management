@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useMutation } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Button from "../../Components/Common/Button";
+import NewPassword from "../../Components/Modals/NewPassword";
 import { otpVerify } from "../../apis/auth";
 import login from "../../assets/Auth/login.svg";
 import { basicSchema } from "../../schemas";
@@ -11,6 +13,7 @@ import { basicSchema } from "../../schemas";
 const OtpScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [newPasswordDialog, setNewPasswordDialog] = useState(false);
   const email = location?.state?.email;
   const onSubmit = () => {
     console.log("first", errors);
@@ -28,11 +31,18 @@ const OtpScreen = () => {
     mutationFn: otpVerify,
     onSuccess: async (data) => {
       console.log(data);
+      console.log(location?.state?.calledFrom);
+      if (location?.state?.calledFrom == "forgotPassword") {
+        setNewPasswordDialog(true);
+        return;
+      }
+      localStorage.setItem("bearer", data?.data?.accessToken);
+      localStorage.setItem("rfToken", data?.data?.refreshToken);
       navigate(`/userDetail/${data?.id}`);
     },
     onError: async (data) => {
       const x = await data;
-      toast.error("Something went wrong");
+
       if (x?.data?.error) {
         toast.error(x?.data?.error ?? "Something Went Wrong");
         return;
@@ -74,6 +84,14 @@ const OtpScreen = () => {
           </div>
         </div>
       </div>
+      {newPasswordDialog && (
+        <NewPassword
+          open={newPasswordDialog}
+          close={() => setNewPasswordDialog(false)}
+          email={email}
+          otp={otp}
+        />
+      )}
     </div>
   );
 };

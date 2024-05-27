@@ -71,12 +71,14 @@ const setNewPassword = async (req, res) => {
         const { email, otp, password } = req.body;
         const user = await fetchUserByEmail(email);
         if (!user) return res.status(400).json({ error: "Invalid User" });
-        const result = await verifyOtp(otp, id, true);
+        const result = await verifyOtp(otp, user._id, true);
         if (!result) return res.status(400).json({ error: "Invalid OTP" });
         const fp = await forgotPasswordByUser(user._id, password);
         if (!fp) return res.status(400).json({ error: "UnExpected Error while Updating the User" });
         return res.status(200).json({ message: "Success" });
     } catch (error) {
+        console.log(error);
+
         return res.status(500).json({ error: error.message })
     }
 }

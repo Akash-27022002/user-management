@@ -27,7 +27,7 @@ export const updateUserProfile = (data) => {
     method: "patch",
     headers: { "Content-Type": "multipart/form-data" },
     data: {
-      image: data,
+      image: data?.data,
     },
   });
   return result;
@@ -47,6 +47,7 @@ export const updateUserPassword = (data) => {
   const result = request({
     url: `/user/${id}`,
     method: "post",
+
     data: { newPassword, oldPassword },
   });
   return result;

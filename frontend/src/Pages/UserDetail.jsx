@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../Components/Common/Button";
@@ -6,6 +6,7 @@ import Button from "../Components/Common/Button";
 import { useFormik } from "formik";
 import InputCross from "../Components/Common/Input";
 import UpdatePassword from "../Components/Modals/UpdatePassword";
+import UpdateUserProfilePhoto from "../Components/Modals/UpdateProfilePhoto";
 import { logout } from "../apis/auth";
 import { getUserDetails, updateUser, updateUserProfile } from "../apis/user";
 import { editSchema } from "../schemas";
@@ -14,6 +15,7 @@ const UserDetail = () => {
   const params = useParams();
   const userId = params.userId;
   const [updatePasswordDialog, setUpdatePasswordDialog] = useState(false);
+  const [updateProfilePhotoModal, setUpdateProfileModal] = useState(false);
   const { data, isLoading, isRefetching } = useQuery(
     ["user", userId],
     () => getUserDetails(userId),
@@ -44,7 +46,7 @@ const UserDetail = () => {
       name: data?.name,
       dob: data?.dob,
       company: data?.company,
-      image: "",
+      file: "",
     },
     enableReinitialize: true,
     validationSchema: editSchema,
@@ -56,7 +58,7 @@ const UserDetail = () => {
     mutationFn: logout,
     onSuccess: async ({ data }) => {
       console.log(data);
-      // navigate("/login");
+      navigate("/login");
     },
     onError: async (data) => {
       const x = await data;
@@ -102,6 +104,12 @@ const UserDetail = () => {
       setIsDisabled(true);
     }
   };
+  useEffect(() => {
+    console.log("first", values);
+    const fd = new FormData();
+    fd.append("image", values.file);
+    mutationEditDp.mutate({ id: params.userId, data: fd });
+  }, [values.file]);
 
   return (
     <div className="w-full bg-grey-1 min-h-screen  flex flex-col justify-center relative ">
@@ -122,25 +130,39 @@ const UserDetail = () => {
               src={`data:image/jpeg;base64,${data?.image}`}
               className="w-20 h-20 rounded-full border-[1px] border-black "
             />
-            <label className="absolute right-0 bottom-0" onClick={() => {}}>
+            {/* <label
+              className="absolute right-0 bottom-0"
+              onClick={() => {
+                setUpdateProfileModal(true);
+              }}
+            >
               P
               <input
-                type="file"
+                // type="file"
                 className="hidden"
                 id="file"
                 name="file"
-                onChange={async (event) => {
-                  console.log(event.currentTarget.files[0]);
-                  setFieldValue("file", event.currentTarget.files[0]);
-                  //edit profile image
-                  const fd = new FormData();
-                  const res = await event.currentTarget.files[0];
-                  fd.append("image", "res");
-                  // mutationEditDp.mutate({ id: params.userId, data: fd });
-                  mutationEditDp.mutate({ id: params.userId, data: fd });
-                }}
+                // onChange={async (event) => {
+                //   console.log(event?.currentTarget?.files[0]);
+                //   console.log(values);
+                //   setUpdateProfileModal(true);
+                //   setFieldValue("file", event?.currentTarget?.files[0]);
+                //   console.log(values);
+                //   //edit profile image
+                //   const res = await event?.currentTarget?.files[0];
+                //   // fd.append("image", res);
+                //   // formData.append("image", values.file);
+
+                //   // if (confirm("Do you want to upload this image?")) {
+                //   //   mutationEditDp.mutate({
+                //   //     id: params.userId,
+                //   //     data: values.image,
+                //   //   });
+                //   // }
+                //   // mutationEditDp.mutate({ id: params.userId, data: fd });
+                // }}
               />
-            </label>
+            </label> */}
 
             {/* <img src={data?.image} /> */}
           </p>
@@ -216,6 +238,12 @@ const UserDetail = () => {
       <UpdatePassword
         open={updatePasswordDialog}
         close={() => setUpdatePasswordDialog(false)}
+      />
+      <UpdateUserProfilePhoto
+        open={updateProfilePhotoModal}
+        close={() => {
+          setUpdateProfileModal(false);
+        }}
       />
     </div>
   );

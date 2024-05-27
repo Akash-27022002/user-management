@@ -53,6 +53,9 @@ export const editPassSchema = yup.object().shape({
     .oneOf([yup.ref("newPassword"), null], "Passwords must match")
     .required("Required"),
 });
+export const forgotPassSchema = yup.object().shape({
+  email: yup.string().email("Please enter a valid email").required("Required"),
+});
 
 // email: "",
 // password: "",

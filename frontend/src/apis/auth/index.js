@@ -39,3 +39,22 @@ export const loginUser = (data) => {
   });
   return result;
 };
+
+export const forgotPassword = ({ email }) => {
+  console.log(email);
+  const result = request({
+    url: "/auth/forgotPassword",
+    method: "post",
+    data: { email: email },
+  });
+  return result;
+};
+export const forgotPassWithOtp = ({ email, password, otp }) => {
+  console.log(email, otp);
+  const result = request({
+    url: "/auth/forgotPassword",
+    method: "patch",
+    data: { email, otp, password },
+  });
+  return result;
+};

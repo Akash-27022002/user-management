@@ -1,7 +1,7 @@
 import axios from "axios";
-// export const baseUrl = "http://172.16.0.30:8084/api";
+export const baseUrl = "http://172.16.0.30:8080/api";
 // const baseUrl = "https://psmdevapi.kdev.co.in/api";
-const baseUrl = "http://localhost:8080/api";
+// const baseUrl = "http://localhost:8080/api";
 
 const client = axios.create({ baseURL: baseUrl });
 

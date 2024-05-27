@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Button from "../../Components/Common/Button";
 import InputCross from "../../Components/Common/Input";
+import ForgotPassword from "../../Components/Modals/ForgotPassword";
 import { loginUser } from "../../apis/auth";
 import login from "../../assets/Auth/login.svg";
 import or from "../../assets/Auth/or.svg";
@@ -13,9 +14,10 @@ const Login = () => {
   const navigate = useNavigate();
   const [userDetail, setUserDetail] = useState({ email: "", password: "" });
   const [showPass, setShowPass] = useState(false);
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const mutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: async ({ data }) => {
+    onSuccess: async (data) => {
       console.log(data);
       navigate("/otp", { state: { email: values.email } });
     },
@@ -108,7 +110,7 @@ const Login = () => {
                     <img
                       src={eyeIcon}
                       className="absolute w-5 h-9 right-2 cursor-pointer"
-                      onClick={(p) => setShowPass(!p)}
+                      onClick={() => setShowPass((p) => !p)}
                     />
                     {/* )} */}
                   </div>
@@ -127,7 +129,10 @@ const Login = () => {
 
             <div className="space-y-2">
               <div className="">
-                <p className="text-[13px] text-blue-1 text-center">
+                <p
+                  className="text-[13px] text-blue-1 text-center cursor-pointer"
+                  onClick={() => setOpenForgotPassword(true)}
+                >
                   Forgot Password
                 </p>
               </div>
@@ -149,6 +154,12 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {openForgotPassword && (
+        <ForgotPassword
+          open={openForgotPassword}
+          close={() => setOpenForgotPassword(false)}
+        />
+      )}
     </div>
   );
 };

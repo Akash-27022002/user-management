@@ -55,7 +55,7 @@ class Otps {
             }
             return {
                 userId,
-                otp: generateOtp(),
+                otp: "111111",//generateOtp(),
                 purpose: "VERIFICATION",
                 isValid: true
             };
