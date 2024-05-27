@@ -68,6 +68,10 @@ class Otps {
         return this.isValid && this.otp == otp && (new Date(this.updatedAt).getTime() / 1000) + 600 >= new Date().getTime() / 1000;
     }
 
+    matchForgotOtp(otp) {
+        return !this.isValid && this.otp == otp && (new Date(this.updatedAt).getTime() / 1000) + 600 >= new Date().getTime() / 1000;
+    }
+
 
 }
 

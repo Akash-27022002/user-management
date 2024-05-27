@@ -19,11 +19,16 @@ const sendOtp = async (email, userId) => {
     }
 }
 
-const verifyOtp = async (otp, userId) => {
+const verifyOtp = async (otp, userId, isForgot = false) => {
     const result = await OTP.findOne({ userId });
     if (!result) return null;
     console.log(result);
-    const match_result = new Otps(result).matchOtp(otp);
+    let match_result;
+    if (!isForgot) {
+        match_result = new Otps(result).matchOtp(otp);
+    } else {
+        match_result = new Otps(result).matchForgotOtp(otp);
+    }
     if (!match_result) return null;
     await result.updateOne({ isValid: false });
     return true;

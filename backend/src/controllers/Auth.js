@@ -1,5 +1,5 @@
 const { fetchUserByEmail, isEmailExists, createUsers, fetchUserById, verifyOtp, sendOtp, forgotPasswordByUser } = require("../services");
-const { setCookies, TOKEN_CONSTANTS } = require("../utils");
+const { setCookies, TOKEN_CONSTANTS, sendEmail } = require("../utils");
 
 /**
  * 
@@ -52,10 +52,26 @@ const createAccount = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
     try {
+        const { email } = req.body;
+        const user = await fetchUserByEmail(email);
+        if (!user) return res.status(400).json({ error: "Invalid User" });
+        await sendOtp(email, user._id);
+        // const result = await verifyOtp(otp, id);
+        // if (!result) return res.status(400).json({ error: "Invalid OTP" });
+        // const fp = await forgotPasswordByUser(user._id, password);
+        // if (!fp) return res.status(400).json({ error: "UnExpected Error while Updating the User" });
+        return res.status(200).json({ message: "Success" });
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
+}
+
+const setNewPassword = async (req, res) => {
+    try {
         const { email, otp, password } = req.body;
         const user = await fetchUserByEmail(email);
-        if (!user) return res.status(400).json({ error: "Invalid Uer" });
-        const result = await verifyOtp(otp, id);
+        if (!user) return res.status(400).json({ error: "Invalid User" });
+        const result = await verifyOtp(otp, id, true);
         if (!result) return res.status(400).json({ error: "Invalid OTP" });
         const fp = await forgotPasswordByUser(user._id, password);
         if (!fp) return res.status(400).json({ error: "UnExpected Error while Updating the User" });
@@ -96,7 +112,7 @@ const validateOtp = async (req, res) => {
         console.log(accessToken, refreshToken);
         setCookies(res, TOKEN_CONSTANTS.ACCESS_TOKEN, accessToken, process.env.JWT_TOKEN_EXPIRY_TIME, false, true);
         setCookies(res, TOKEN_CONSTANTS.REFRESH_TOKEN, refreshToken, process.env.JWT_REFRESH_TOKEN_EXPIRY_TIME, false, true);
-        return res.status(200).json({ message: "Success", id: user._id })
+        return res.status(200).json({ message: "Success", id: user._id, data: { accessToken, refreshToken }, })
     } catch (error) {
         return res.status(500).json({ error: error.message })
     }
@@ -107,5 +123,6 @@ module.exports = {
     logout,
     createAccount,
     validateOtp,
-    forgotPassword
+    forgotPassword,
+    setNewPassword
 }
