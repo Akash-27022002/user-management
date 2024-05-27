@@ -15,7 +15,7 @@ app.use(cors({
     origin: [
         "http://localhost:5175",
         "http://localhost:5173",
-        "https://user-management-frontend.onrender.com/"
+        "https://user-management-frontend.onrender.com"
     ],
     methods: ["GET", "DELETE", "PATCH", "POST", "PUT"],
     credentials: true,
