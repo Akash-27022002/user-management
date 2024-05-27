@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors")
+const cookieSession = require("cookie-session");
 const router = require("./routes");
 
 const app = express();
@@ -19,6 +20,16 @@ app.use(cors({
     credentials: true,
     withCredentials: true,
 }));
+
+app.use(
+    cookieSession({
+        name: "bezkoder-session",
+        keys: ["COOKIE_SECRET"], // should use as secret environment variable
+        httpOnly: false,
+        sameSite: "strict",
+    })
+);
+
 
 app.get("/", (req, res) => {
     res.send("<h1>HAa </h1>")
